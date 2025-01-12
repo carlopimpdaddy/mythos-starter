@@ -98,11 +98,8 @@ async function startAgent(character: Character, directClient: DirectClient) {
 
     return runtime;
   } catch (error) {
-    elizaLogger.error(
-      `Error starting agent for character ${character.name}:`,
-      error,
-    );
-    console.error(error);
+    elizaLogger.error(`Error starting agent for character ${character.name}:`, error);
+    // Properly close any open connections here
     throw error;
   }
 }
