@@ -143,6 +143,7 @@ const startAgents = async () => {
     }
   } catch (error) {
     elizaLogger.error("Error starting agents:", error);
+    console.error(error); // Log the full error object
   }
 
   //while (!(await checkPortAvailable(serverPort))) {
@@ -167,6 +168,15 @@ const startAgents = async () => {
   const chat = startChat(characters);
   chat();
 };
+
+//CLEANUP
+process.on('SIGINT', async () => {
+  elizaLogger.log('Shutting down gracefully...');
+  // Close database connections, sockets, etc.
+  await db.close();
+  process.exit(0);
+});
+
 
 startAgents().catch((error) => {
   elizaLogger.error("Unhandled error in startAgents:", error);
