@@ -1,10 +1,3 @@
-ARG RAILWAY_ENVIRONMENT
-ARG RAILWAY_SERVICE_NAME
-
-ENV RAILWAY_ENVIRONMENT=${RAILWAY_ENVIRONMENT}
-ENV RAILWAY_SERVICE_NAME=${RAILWAY_SERVICE_NAME}
-
-
 # Use a specific Node.js version for better reproducibility
 FROM node:23.3.0-slim AS builder
 
@@ -21,6 +14,10 @@ RUN ln -s /usr/bin/python3 /usr/bin/python
 # Set the working directory
 WORKDIR /app
 
+# Use ARG to declare build-time variables
+ARG RAILWAY_ENVIRONMENT
+ARG RAILWAY_SERVICE_NAME
+
 # Copy package.json and other configuration files
 COPY package.json ./
 COPY pnpm-lock.yaml ./
@@ -34,9 +31,9 @@ COPY ./characters ./characters
 RUN pnpm i
 RUN pnpm build 
 
-# Use environment variables in your build process if needed
-RUN echo "Building for environment: $RAILWAY_ENVIRONMENT"
-RUN echo "Service name: $RAILWAY_SERVICE_NAME"
+# Use ENV to set runtime environment variables
+ENV RAILWAY_ENVIRONMENT=$RAILWAY_ENVIRONMENT
+ENV RAILWAY_SERVICE_NAME=$RAILWAY_SERVICE_NAME
 
 # Create a new stage for the final image
 FROM node:23.3.0-slim
