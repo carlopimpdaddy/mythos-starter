@@ -60,5 +60,5 @@ COPY --from=builder /app/pnpm-lock.yaml /app/
 EXPOSE 3000
 # Set the command to run the application
 #CMD ["pnpm", "start", "--non-interactive"]
-CMD ["pnpm", "run", "start", "--characters=./characters/mythos.character.json"]
+CMD ["pnpm", "start", "--", "--characters=./characters/mythos.character.json"]
 # CMD ["node", "dist/index.js"]
