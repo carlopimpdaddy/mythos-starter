@@ -1,6 +1,8 @@
 # Use a specific Node.js version for better reproducibility
 FROM node:23.3.0-slim AS builder
 
+RUN clean
+
 # Install pnpm globally and install necessary build tools
 RUN npm install -g pnpm@9.15.1 
 RUN apt-get update && \
