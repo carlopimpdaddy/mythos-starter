@@ -1,3 +1,10 @@
+ARG RAILWAY_ENVIRONMENT
+ARG RAILWAY_SERVICE_NAME
+
+ENV RAILWAY_ENVIRONMENT=${RAILWAY_ENVIRONMENT}
+ENV RAILWAY_SERVICE_NAME=${RAILWAY_SERVICE_NAME}
+
+
 # Use a specific Node.js version for better reproducibility
 FROM node:23.3.0-slim AS builder
 
@@ -26,6 +33,11 @@ COPY ./characters ./characters
 # Install dependencies and build the project
 RUN pnpm i
 RUN pnpm build 
+
+# Use environment variables in your build process if needed
+RUN echo "Building for environment: $RAILWAY_ENVIRONMENT"
+RUN echo "Service name: $RAILWAY_SERVICE_NAME"
+
 # Create a new stage for the final image
 FROM node:23.3.0-slim
 
