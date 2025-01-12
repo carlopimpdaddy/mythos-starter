@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "build": "tsc --noEmit && tsup src/index.ts --format esm --dts",
-    "start": "tsc && node --loader ts-node/esm src/index.ts",
     "start": "node --no-warnings=DeprecationWarning --no-warnings=ExperimentalWarning --loader ts-node/esm src/index.ts --characters=./characters/mythos.character.json",
     "stop:service:all": "pm2 stop all"
   },
