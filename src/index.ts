@@ -24,6 +24,10 @@ import {
 } from "./config/index.ts";
 import { initializeDatabase } from "./database/index.ts";
 
+// Add these lines to access Railway environment variables
+const environment = process.env.RAILWAY_ENVIRONMENT;
+const serviceName = process.env.RAILWAY_SERVICE_NAME;
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
