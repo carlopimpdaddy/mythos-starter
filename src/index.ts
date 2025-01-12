@@ -130,9 +130,16 @@ const checkPortAvailable = (port: number): Promise<boolean> => {
   });
 };
 
+
+
+
 const startAgents = async () => {
   const directClient = new DirectClient();
-  let serverPort = parseInt(settings.SERVER_PORT || "3000");
+  //let serverPort = parseInt(settings.SERVER_PORT || "3000");
+  const port = process.env.PORT || 3000;
+    app.listen(port, () => {
+      console.log(`Server running on port ${port}`);
+    });
   const args = parseArguments();
 
   let charactersArg = args.characters || args.character;
