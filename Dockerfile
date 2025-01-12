@@ -1,8 +1,6 @@
 # Use a specific Node.js version for better reproducibility
 FROM node:23.3.0-slim AS builder
 
-RUN clean
-
 # Install pnpm globally and install necessary build tools
 RUN npm install -g pnpm@9.15.1 
 RUN apt-get update && \
@@ -16,10 +14,6 @@ RUN ln -s /usr/bin/python3 /usr/bin/python
 # Set the working directory
 WORKDIR /app
 
-# Use ARG to declare build-time variables
-ARG RAILWAY_ENVIRONMENT
-ARG RAILWAY_SERVICE_NAME
-
 # Copy package.json and other configuration files
 COPY package.json ./
 COPY pnpm-lock.yaml ./
@@ -32,10 +26,6 @@ COPY ./characters ./characters
 # Install dependencies and build the project
 RUN pnpm i
 RUN pnpm build 
-
-# Use ENV to set runtime environment variables
-ENV RAILWAY_ENVIRONMENT=$RAILWAY_ENVIRONMENT
-ENV RAILWAY_SERVICE_NAME=$RAILWAY_SERVICE_NAME
 
 # Create a new stage for the final image
 FROM node:23.3.0-slim
@@ -58,6 +48,12 @@ COPY --from=builder /app/characters /app/characters
 COPY --from=builder /app/dist /app/dist
 COPY --from=builder /app/tsconfig.json /app/
 COPY --from=builder /app/pnpm-lock.yaml /app/
+
+# Use ARG to declare build-time variables
+ARG RAILWAY_ENVIRONMENT
+ARG RAILWAY_SERVICE_NAME
+ENV RAILWAY_ENVIRONMENT=$RAILWAY_ENVIRONMENT
+ENV RAILWAY_SERVICE_NAME=$RAILWAY_SERVICE_NAME
 
 EXPOSE 3000
 # Set the command to run the application
