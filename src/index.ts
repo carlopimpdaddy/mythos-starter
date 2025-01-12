@@ -169,14 +169,6 @@ const startAgents = async () => {
   chat();
 };
 
-//CLEANUP
-process.on('SIGINT', async () => {
-  elizaLogger.log('Shutting down gracefully...');
-  // Close database connections, sockets, etc.
-  await db.close();
-  process.exit(0);
-});
-
 
 startAgents().catch((error) => {
   elizaLogger.error("Unhandled error in startAgents:", error);
