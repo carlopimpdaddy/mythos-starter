@@ -98,33 +98,14 @@ async function startAgent(character: Character, directClient: DirectClient) {
 
     return runtime;
   } catch (error) {
-    elizaLogger.error(`Error starting agent for character ${character.name}:`, error);
-    // Close any open connections here
-    if (runtime && runtime.close) {
-      await runtime.close();
-    }
+    elizaLogger.error(
+      `Error starting agent for character ${character.name}:`,
+      error,
+    );
+    console.error(error);
     throw error;
   }
-
-async function shutdown() {
-  // Close all connections, clean up resources
-  if (directClient) {
-    await directClient.close();
-  }
-  // Close any other connections or resources managed by the application
 }
-
-process.on('SIGINT', async () => {
-  elizaLogger.info('Received SIGINT. Shutting down...');
-  await shutdown();
-  process.exit(0);
-});
-
-process.on('SIGTERM', async () => {
-  elizaLogger.info('Received SIGTERM. Shutting down...');
-  await shutdown();
-  process.exit(0);
-});
 
 // const checkPortAvailable = (port: number): Promise<boolean> => {
 //   return new Promise((resolve) => {
@@ -159,14 +140,12 @@ const startAgents = async () => {
     characters = await loadCharacters(charactersArg);
   }
   console.log("characters", characters);
-  
   try {
     for (const character of characters) {
       await startAgent(character, directClient as DirectClient);
     }
   } catch (error) {
     elizaLogger.error("Error starting agents:", error);
-    console.error(error); // Log the full error object
   }
 
   //while (!(await checkPortAvailable(serverPort))) {
@@ -192,9 +171,7 @@ const startAgents = async () => {
   chat();
 };
 
-
 startAgents().catch((error) => {
   elizaLogger.error("Unhandled error in startAgents:", error);
   process.exit(1);
 });
-}
