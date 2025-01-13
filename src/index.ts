@@ -99,7 +99,10 @@ async function startAgent(character: Character, directClient: DirectClient) {
     return runtime;
   } catch (error) {
     elizaLogger.error(`Error starting agent for character ${character.name}:`, error);
-    // Properly close any open connections here
+    // Close any open connections here
+    if (runtime && runtime.close) {
+      await runtime.close();
+    }
     throw error;
   }
 }
