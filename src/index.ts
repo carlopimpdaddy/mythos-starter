@@ -98,8 +98,11 @@ async function startAgent(character: Character, directClient: DirectClient) {
 
     return runtime;
   } catch (error) {
-    elizaLogger.error(`Error starting agent for character ${character.name}:`, error);
-    // Properly close any open connections here
+    elizaLogger.error(
+      `Error starting agent for character ${character.name}:`,
+      error,
+    );
+    console.error(error);
     throw error;
   }
 }
@@ -143,7 +146,6 @@ const startAgents = async () => {
     }
   } catch (error) {
     elizaLogger.error("Error starting agents:", error);
-    console.error(error); // Log the full error object
   }
 
   //while (!(await checkPortAvailable(serverPort))) {
@@ -168,7 +170,6 @@ const startAgents = async () => {
   const chat = startChat(characters);
   chat();
 };
-
 
 startAgents().catch((error) => {
   elizaLogger.error("Unhandled error in startAgents:", error);
