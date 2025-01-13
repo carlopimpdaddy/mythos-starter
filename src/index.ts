@@ -105,7 +105,26 @@ async function startAgent(character: Character, directClient: DirectClient) {
     }
     throw error;
   }
+
+async function shutdown() {
+  // Close all connections, clean up resources
+  if (directClient) {
+    await directClient.close();
+  }
+  // Close any other connections or resources managed by the application
 }
+
+process.on('SIGINT', async () => {
+  elizaLogger.info('Received SIGINT. Shutting down...');
+  await shutdown();
+  process.exit(0);
+});
+
+process.on('SIGTERM', async () => {
+  elizaLogger.info('Received SIGTERM. Shutting down...');
+  await shutdown();
+  process.exit(0);
+});
 
 // const checkPortAvailable = (port: number): Promise<boolean> => {
 //   return new Promise((resolve) => {
@@ -140,6 +159,7 @@ const startAgents = async () => {
     characters = await loadCharacters(charactersArg);
   }
   console.log("characters", characters);
+  
   try {
     for (const character of characters) {
       await startAgent(character, directClient as DirectClient);
