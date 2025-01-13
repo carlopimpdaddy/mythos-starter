@@ -86,6 +86,7 @@ async function startAgent(character: Character, directClient: DirectClient) {
 
     const cache = initializeDbCache(character, db);
     const runtime = createAgent(character, db, cache, token);
+    logInfo(`Runtime created for ${character.name}`);
 
     await runtime.initialize();
 
@@ -169,7 +170,14 @@ const startAgents = async () => {
   elizaLogger.log("Chat started. Type 'exit' to quit.");
   const chat = startChat(characters);
   chat();
+
+  const logError = (error: unknown, message?: string) => {
+  const timestamp = new Date().toISOString();
+  console.error(`[${timestamp}] ${message || 'Uncaught Exception'}:`, error);
 };
+};
+
+
 
 startAgents().catch((error) => {
   elizaLogger.error("Unhandled error in startAgents:", error);
