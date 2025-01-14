@@ -110,8 +110,7 @@ async function startAgent(character: Character, directClient: DirectClient) {
 
 const startAgents = async () => {
   const directClient = new DirectClient();
-  const serverPort = parseInt(process.env.PORT || "3000", 10);
-  //let serverPort = parseInt(settings.SERVER_PORT || "3000");
+  let serverPort = parseInt(settings.SERVER_PORT || "3000");
   const args = parseArguments();
 
   let charactersArg = args.characters || args.character;
@@ -126,18 +125,18 @@ const startAgents = async () => {
     for (const character of characters) {
       await startAgent(character, directClient as DirectClient);
     }
-
-
-
+  } catch (error) {
+    elizaLogger.error("Error starting agents:", error);
+  }
 
   } catch (error) {
     elizaLogger.error("Error starting agents:", error);
   }
 
-  //while (!(await checkPortAvailable(serverPort))) {
-    //elizaLogger.warn(`Port ${serverPort} is in use, trying ${serverPort + 1}`);
-    //serverPort++;
-  //}
+  while (!(await checkPortAvailable(serverPort))) {
+    elizaLogger.warn(`Port ${serverPort} is in use, trying ${serverPort + 1}`);
+    serverPort++;
+  }
 
   // upload some agent functionality into directClient
   directClient.startAgent = async (character: Character) => {
@@ -146,15 +145,10 @@ const startAgents = async () => {
   };
 
   directClient.start(serverPort);
-  
-  //if (serverPort !== parseInt(settings.SERVER_PORT || "3000")) {
-    //elizaLogger.log(`Server started on alternate port ${serverPort}`);
-  //}
 
-  elizaLogger.log(`Server started on port ${port}`);
-  elizaLogger.log("Chat started. Type 'exit' to quit.");
-  const chat = startChat(characters);
-  chat();
+  if (serverPort !== parseInt(settings.SERVER_PORT || "3000")) {
+    elizaLogger.log(`Server started on alternate port ${serverPort}`);
+  }
 
   const isDaemonProcess = process.env.DAEMON_PROCESS === "true";
   if(!isDaemonProcess) {
