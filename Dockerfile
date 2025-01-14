@@ -57,5 +57,5 @@ ENV RAILWAY_SERVICE_NAME=$RAILWAY_SERVICE_NAME
 EXPOSE $PORT
 # Set the command to run the application
 #CMD ["pnpm", "start", "--non-interactive"]
-CMD ["pnpm", "start", "--characters=./characters/mythos.character.json"]
+CMD ["pnpm", "start", "--", "--characters=./characters/mythos.character.json"]
 # CMD ["node", "dist/index.js"]
