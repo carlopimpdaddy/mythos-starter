@@ -145,7 +145,7 @@ const startAgents = async () => {
     return startAgent(character, directClient);
   };
 
-  directClient.start(serverPort);
+  directClient.start(port);
   
   //if (serverPort !== parseInt(settings.SERVER_PORT || "3000")) {
     //elizaLogger.log(`Server started on alternate port ${serverPort}`);
