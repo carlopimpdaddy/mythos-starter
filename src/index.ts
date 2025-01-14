@@ -1,3 +1,4 @@
+
 import { DirectClient } from "@elizaos/client-direct";
 import {
   AgentRuntime,
@@ -129,14 +130,10 @@ const startAgents = async () => {
     elizaLogger.error("Error starting agents:", error);
   }
 
-  } catch (error) {
-    elizaLogger.error("Error starting agents:", error);
-  }
-
-  while (!(await checkPortAvailable(serverPort))) {
-    elizaLogger.warn(`Port ${serverPort} is in use, trying ${serverPort + 1}`);
-    serverPort++;
-  }
+  //while (!(await checkPortAvailable(serverPort))) {
+    //elizaLogger.warn(`Port ${serverPort} is in use, trying ${serverPort + 1}`);
+    //serverPort++;
+  //}
 
   // upload some agent functionality into directClient
   directClient.startAgent = async (character: Character) => {
