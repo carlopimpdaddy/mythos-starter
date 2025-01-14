@@ -107,25 +107,6 @@ async function startAgent(character: Character, directClient: DirectClient) {
   }
 }
 
-// const checkPortAvailable = (port: number): Promise<boolean> => {
-//   return new Promise((resolve) => {
-//     const server = net.createServer();
-
-//     server.once("error", (err: NodeJS.ErrnoException) => {
-//       if (err.code === "EADDRINUSE") {
-//         resolve(false);
-//       }
-//     });
-
-//     server.once("listening", () => {
-//       server.close();
-//       resolve(true);
-//     });
-
-//     server.listen(port);
-//   });
-// };
-
 
 const startAgents = async () => {
   const directClient = new DirectClient();
@@ -146,9 +127,7 @@ const startAgents = async () => {
       await startAgent(character, directClient as DirectClient);
     }
 
-    directClient.start(port);
-    elizaLogger.log(`Server started on port ${port}`);
-    elizaLogger.log("Chat started. Type 'exit' to quit.");
+
 
 
   } catch (error) {
@@ -166,13 +145,7 @@ const startAgents = async () => {
     return startAgent(character, directClient);
   };
 
-  directClient.start(port);
-
-process.stdin.resume();
-  } catch (error) {
-    elizaLogger.error("Error starting agents:", error);
-    process.exit(1);
-  }
+  directClient.start(serverPort);
   
   //if (serverPort !== parseInt(settings.SERVER_PORT || "3000")) {
     //elizaLogger.log(`Server started on alternate port ${serverPort}`);
