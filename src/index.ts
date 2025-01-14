@@ -172,9 +172,7 @@ const startAgents = async () => {
   chat();
 };
 
-
 startAgents().catch((error) => {
   elizaLogger.error("Unhandled error in startAgents:", error);
   process.exit(1);
 });
-
