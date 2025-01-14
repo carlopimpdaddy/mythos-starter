@@ -126,9 +126,20 @@ async function startAgent(character: Character, directClient: DirectClient) {
 //   });
 // };
 
+class SingletonAgentRuntime {
+  private static instance: SingletonAgentRuntime;
+  private constructor() {}
+  
+  public static getInstance(): SingletonAgentRuntime {
+    if (!SingletonAgentRuntime.instance) {
+      SingletonAgentRuntime.instance = new SingletonAgentRuntime();
+    }
+    return SingletonAgentRuntime.instance;
+  }
+  //rest
 const startAgents = async () => {
   const directClient = new DirectClient();
-  const port = parseInt(process.env.PORT || "8080", 10);
+  const port = parseInt(process.env.PORT || "3000", 10);
   //let serverPort = parseInt(settings.SERVER_PORT || "3000");
   const args = parseArguments();
 
@@ -170,7 +181,7 @@ const startAgents = async () => {
   const chat = startChat(characters);
   chat();
 };
-
+}
 
 
 startAgents().catch((error) => {
