@@ -150,8 +150,12 @@ const startAgents = async () => {
   const isDaemonProcess = process.env.DAEMON_PROCESS === "true";
   if(!isDaemonProcess) {
     elizaLogger.log("Chat started. Type 'exit' to quit.");
-    const chat = startChat(characters);
-    chat();
+    try {
+      const chat = startChat(characters);
+      chat();
+    } catch (e) {
+      console.error("[start agent]", e);
+    }
   }
 };
 
