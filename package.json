@@ -1,5 +1,5 @@
 {
-  "name": "@ai16z/agent",
+  "name": "@elizaos/eliza-starter",
   "version": "0.1.1",
   "main": "src/index.ts",
   "type": "module",
@@ -7,6 +7,7 @@
     "build": "tsc --noEmit && tsup src/index.ts --format esm --dts",
     "start": "node --no-warnings=DeprecationWarning --no-warnings=ExperimentalWarning --loader ts-node/esm src/index.ts --characters=./characters/mythos.character.json",
     "start:service:all": "pm2 start pnpm --name=\"all\" --restart-delay=3000 --max-restarts=10 -- run start:all",
+    "clean": "./scripts/clean.sh",
     "stop:service:all": "pm2 stop all"
   },
   "dependencies": {
